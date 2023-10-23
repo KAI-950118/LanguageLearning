@@ -15,13 +15,13 @@ def GetExcelPath():
 
 
 ## Cover
-def CoverRead(path=r'C:\Users\harry\我的雲端硬碟\LangageLearning_Engnish.xlsx', sheet='Cover'):
+def CoverRead(path='', sheet='Cover'):
     df = pd.read_excel(path, sheet)
     result_dict = df.set_index('Item').to_dict()['Num']
     return result_dict
 
 
-def CoverUpdate(CoverDict, path=r'C:\Users\harry\我的雲端硬碟\LangageLearning_Engnish.xlsx', sheet='Cover'):
+def CoverUpdate(CoverDict, path='', sheet='Cover'):
     df = pd.DataFrame(list(CoverDict.items()), columns=['Item', 'Num'])
     # df.to_excel(path, sheet, index=False)
     workbook = openpyxl.load_workbook(path)
@@ -36,7 +36,7 @@ def CoverUpdate(CoverDict, path=r'C:\Users\harry\我的雲端硬碟\LangageLearn
 
 
 ## Vocabulary
-def VocaUpdate(Vocabulary, path=r'C:\Users\harry\我的雲端硬碟\LangageLearning_Engnish.xlsx', sheet='Vocabulary'):
+def VocaUpdate(Vocabulary, path='', sheet='Vocabulary'):
     # 先確定有沒有重複
     Replace = VocaCheck(Vocabulary, path=path)
     if Replace == False:
@@ -56,7 +56,7 @@ def VocaUpdate(Vocabulary, path=r'C:\Users\harry\我的雲端硬碟\LangageLearn
         workbook.save(path)
 
 
-def VocaCheck(Vocabulary, path=r'C:\Users\harry\我的雲端硬碟\LangageLearning_Engnish.xlsx', sheet='Vocabulary'):
+def VocaCheck(Vocabulary, path='', sheet='Vocabulary'):
     workbook = openpyxl.load_workbook(path)
     sheet = workbook[sheet]
     word_list = [cell.value.lower() for cell in sheet['B'] if cell.value]
@@ -68,7 +68,7 @@ def VocaCheck(Vocabulary, path=r'C:\Users\harry\我的雲端硬碟\LangageLearni
         return False
 
 
-def VocaRead(path=r'C:\Users\harry\我的雲端硬碟\LangageLearning_Engnish.xlsx', sheet='Vocabulary'):
+def VocaRead(path='', sheet='Vocabulary'):
     df = pd.read_excel(path, sheet_name=sheet)
     df.to_csv('VocaTemp.csv', index=False)
 
@@ -79,7 +79,7 @@ def VocaRead(path=r'C:\Users\harry\我的雲端硬碟\LangageLearning_Engnish.xl
     return vocabulary_list, id_list
 
 
-def VocaUpdateAlreadyPro(path=r'C:\Users\harry\我的雲端硬碟\LangageLearning_Engnish.xlsx', sheet='Vocabulary'):
+def VocaUpdateAlreadyPro(path='', sheet='Vocabulary'):
     workbook = openpyxl.load_workbook(path)
     sheet = workbook[sheet]
     for row in range(2, sheet.max_row + 1):
@@ -89,7 +89,7 @@ def VocaUpdateAlreadyPro(path=r'C:\Users\harry\我的雲端硬碟\LangageLearnin
 
 
 ## Sentence
-def SentUpdate(TestTime, path=r'C:\Users\harry\我的雲端硬碟\LangageLearning_Engnish.xlsx', sheet='Sentence'):
+def SentUpdate(TestTime, path='', sheet='Sentence'):
     # 知道上次最後一行
     workbook = openpyxl.load_workbook(path)
     sheet = workbook[sheet]
@@ -146,7 +146,7 @@ def SentUpdate(TestTime, path=r'C:\Users\harry\我的雲端硬碟\LangageLearnin
     VocaUpdateAlreadyPro(path=path)
 
 
-def SentGetTest(TestTime, TestNum=40, path=r'C:\Users\harry\我的雲端硬碟\LangageLearning_Engnish.xlsx',
+def SentGetTest(TestTime, TestNum=40, path='',
                 sheet='Sentence'):
     df = pd.read_excel(path, sheet_name=sheet)
     df.to_csv('SentTemp.csv', index=False)
@@ -170,7 +170,7 @@ def SentGetTest(TestTime, TestNum=40, path=r'C:\Users\harry\我的雲端硬碟\L
     return New_df
 
 
-def SentGetVoice(Id, Level, Sentence, path):  # TODO 還沒用好 還需要自動隨機變聲
+def SentGetVoice(Id, Level, Sentence, path):
     # 確認是否需要重新抓聲音
     match Level:
         case 1:
@@ -214,7 +214,7 @@ def SentChangeCorrect(MainDf, Id):
     return MainDf
 
 
-def SentUpdateAftTest(TestTime, MainDf, path=r'C:\Users\harry\我的雲端硬碟\LangageLearning_Engnish.xlsx',
+def SentUpdateAftTest(TestTime, MainDf, path='',
                       sheet='Sentence'):
     MainDf = MainDf.apply(lambda row: SentUpdateAftTestProcessRow(row, TestTime), axis=1)
     MainDf.drop(columns=['Correct'], inplace=True)

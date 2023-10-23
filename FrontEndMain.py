@@ -88,7 +88,7 @@ class LoadMainUI(QMainWindow):
             self.StartTest = True
             TestNumber = self.findChild(QLineEdit, "Main_TestNumber_Show").text()
             # 取得要測試的內容
-            self.Sentence_df = BE.SentGetTest(TestTime=self.NewTestTime, TestNum=int(TestNumber))
+            self.Sentence_df = BE.SentGetTest(TestTime=self.NewTestTime, TestNum=int(TestNumber),path=self.path)
             self.TestTotal = len(self.Sentence_df)
             # 如果今天沒有要測試的例外
             if self.TestTotal == 0:
@@ -185,7 +185,7 @@ class LoadMainUI(QMainWindow):
         self.TestVoiceFile = f'{self.voicePath}/GPT_Done.wav'
         # 發出聲音
         TTS.Play_wav(self.TestVoiceFile)
-
+        self.findChild(QLineEdit, "Word_Text").setText("OK")
 
 if __name__ == "__main__":
     # 打開UI Window
