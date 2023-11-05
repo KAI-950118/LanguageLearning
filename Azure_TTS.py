@@ -10,14 +10,19 @@ def GetVoicePath():
         content = file.read()
     return content
 
+def GetAzureKeyPath():
+    with open('Azure_Key.txt', 'r', encoding='utf-8') as file:
+        content = file.read().splitlines()
+    return content
 
 # 連結Azure_API (免費每月約50萬字)
 def Azure_TTS(path, voice_name='en-US-SaraNeural', text='Test Test Connent to Azure API', GetFile=False, FileName=None):
     # path = GetVoicePath()
 
+    AzureKey = GetAzureKeyPath()
     # This example requires environment variables named "SPEECH_KEY" and "SPEECH_REGION"
-    speech_config = speechsdk.SpeechConfig(subscription=os.environ.get('SPEECH_KEY'),
-                                           region=os.environ.get('SPEECH_REGION'))
+    speech_config = speechsdk.SpeechConfig(subscription=AzureKey[0],
+                                           region=AzureKey[1])
     # The language of the voice that speaks.
     speech_config.speech_synthesis_voice_name = voice_name
 
@@ -110,7 +115,7 @@ if __name__ == '__main__':
     pass
     path = GetVoicePath()
     voice_name = Azure_VoiceName(DeleteList=[])
-    Azure_TTS(path, voice_name=voice_name, text='Test completed', GetFile=True, FileName='Test_Over')
+    Azure_TTS(path, voice_name=voice_name, text='Test completed', GetFile=False, FileName='Test_Over')
 
     # # 路徑替換成你的 wav 檔案
     # path = GetVoicePath()
